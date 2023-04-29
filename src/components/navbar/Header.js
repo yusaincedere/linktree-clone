@@ -14,7 +14,7 @@ export default function Header() {
   const path = router.asPath;
 
   const [navigation, setNavigation] = useState([
-    { name: 'My Links', href: '/myLinks',  loginRequired: true},
+    { name: 'Links', href: '/links',  loginRequired: true},
     { name: 'Home', href: '/', loginRequired: false},
     { name: 'Team', href: '/team', loginRequired: false},
   ]);
