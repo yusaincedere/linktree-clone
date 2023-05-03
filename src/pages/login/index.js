@@ -39,7 +39,6 @@ export default function LoginPage({pageProps}){
                             >Username
                           </label>
                         </div>
-      
                         {/* password  input*/}
                         <div className="relative mb-4" data-te-input-wrapper-init>
                           <input

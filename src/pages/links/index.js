@@ -1,11 +1,27 @@
-import { Fragment, useState } from 'react'
-import { TrashIcon } from '@heroicons/react/solid'
+import { Fragment, useEffect, useState } from 'react'
 export default function HomePage({ pageProps }) {
   const [isSelectVisible, setIsSelectVisible] = useState(false);
   const [myLinkList, setMyLinkList] = useState([]);
   const [title, setTitle] = useState('');
   const [link, setLink] = useState('');
   const [platform, setPlatform] = useState('');
+
+  const getMyLinks = async () => {
+    const data ={
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+      },
+    };
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/links`,data);
+    const response = await res.json();
+
+    setMyLinkList(response.links)
+  }
+
+  useEffect(()=>{
+    getMyLinks()
+  },[])
 
   const avatarPlaceHolder = (<div className="avatar placeholder">
     <div className="bg-neutral-focus text-neutral-content rounded-full w-24">

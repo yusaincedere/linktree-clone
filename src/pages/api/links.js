@@ -1,9 +1,14 @@
 import { query } from "../../repository/db";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
 
     if (req.method === "GET") {
-        res.status(200).json({name:"yuşa"})
+        const links = await query({
+            query:"SELECT * FROM links",
+            values:[]
+        })
+
+        res.status(200).json({links:links[0]})
     }
 
 }
