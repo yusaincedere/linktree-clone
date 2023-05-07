@@ -83,7 +83,7 @@ export default function HomePage({ pageProps }) {
                   <button onClick={saveLink} className="btn btn-secondary ml-6 mb-6 mr-6">Save</button>
                 </form>
                 <div className="overflow-x-auto">
-                  <table className="table w-full">
+                 {myLinkList.length>0 && <table className="table w-full">
                     {/* head */}
                     <thead>
                       <tr>
@@ -114,7 +114,7 @@ export default function HomePage({ pageProps }) {
                         </tr>
                       ))}
                     </tbody>
-                  </table>
+                  </table>}
                 </div>
               </div>
             </div>

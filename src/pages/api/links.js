@@ -8,7 +8,7 @@ export default async function handler(req, res) {
             values:[]
         })
 
-        res.status(200).json({links:links[0]})
+        res.status(200).json({links:links})
     }
 
 }
