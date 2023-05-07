@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/sequelize');
-const User = require("./user")
+import { sequelize } from '@/repository/db';
+import User from "./User"
 
 const Link = sequelize.define('Link', {
     id: {
@@ -30,10 +30,13 @@ const Link = sequelize.define('Link', {
 },
 {
     tableName:'links',
-    underscored: true
+    underscored: true,
+    timestamps: false,
 });
 
-User.hasMany(Link);
-Link.belongsTo(User);
+
+Link.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Link, { foreignKey: 'user_id' });
+
 
 export default Link;

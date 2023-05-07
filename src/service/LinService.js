@@ -1,4 +1,4 @@
-import Link from '../models/link';
+import Link from '../models/Link';
 
 const linkService = {
   async createLink(userId, linkData) {

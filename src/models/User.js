@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/sequelize');
+import { sequelize } from '@/repository/db';
 
-User = sequelize.define('User', {
+const User = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -25,7 +25,8 @@ User = sequelize.define('User', {
 },
 {
     tableName:'users',
-    underscored: true
+    underscored: true,
+    timestamps: false,
 });
 
 export default User;
