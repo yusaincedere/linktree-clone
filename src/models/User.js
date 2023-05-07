@@ -20,7 +20,7 @@ const User = sequelize.define('User', {
 
   photo_url: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true
   }
 },
 {
