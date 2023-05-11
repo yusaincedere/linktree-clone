@@ -9,7 +9,6 @@ export default async function handler(req, res) {
     const link = await linkService.createLink(userId, linkData);
     res.status(201).json({ link });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: error.message });
   }
 }
