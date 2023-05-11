@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "autoprefixer": "10.4.14",
+    "aws-sdk": "^2.1376.0",
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
     "daisyui": "^2.51.6",

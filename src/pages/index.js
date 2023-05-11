@@ -8,6 +8,9 @@ export default function HomePage({ pageProps }) {
 </div>
 )
 
+
+
+
   return (
     <section className="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
       <div className="h-full p-10">

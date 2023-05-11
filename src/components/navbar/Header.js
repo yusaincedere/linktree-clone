@@ -13,26 +13,39 @@ export default function Header({ handleLogout }) {
   const router = useRouter();
   const path = router.asPath;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName,setUserName] = useState("");
 
   const [navigation, setNavigation] = useState([
     { name: 'Links', href: '/links' },
     { name: 'Home', href: '/' },
     { name: 'Team', href: '/team' },
   ]);
-  const userSignIn = false;
+
+
+  const avatarPlaceHolder = (<div className="avatar placeholder">
+  <div className="bg-neutral-focus bg-white text-black rounded-full w-8">
+    <span className="text-3xl">{userName.substring(0,1).toUpperCase()}</span>
+  </div>
+</div>
+)
 
 
 
   useEffect(() => {
     const storedData = localStorage.getItem('isAuthenticated');
+    const storedUser = localStorage.getItem('userName');
     if (storedData) {
       setIsAuthenticated(storedData === 'true');
+    }
+    if(storedUser){
+     setUserName(storedUser);
     }
   }, []);
 
   useEffect(() => {
     const handleStorageChange = () => {
       setIsAuthenticated(localStorage.getItem("isAuthenticated") === "true");
+      setUserName(localStorage.getItem("userName"));
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -101,15 +114,16 @@ export default function Header({ handleLogout }) {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
-                <a
+                {!isAuthenticated && <a
                   href="/login"
                   className={classNames('bg-white text-black m-3',
                     'rounded-md px-3 py-2 text-sm font-medium'
                   )}
                 >
                   Login
-                </a>
-                <a
+                </a>}
+
+                {!isAuthenticated && <a
                   href="/register"
                   className={classNames('bg-gray-700 text-white m-3',
                     'rounded-md px-3 py-2 text-sm font-medium'
@@ -117,17 +131,13 @@ export default function Header({ handleLogout }) {
                 >
                   Register
                 </a>
-
+}
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      {userSignIn && <img
-                        className="h-8 w-8 rounded-full"
-                        src={props.profileImageUrl}
-                        alt=""
-                      />}
+                      {isAuthenticated && avatarPlaceHolder}
                     </Menu.Button>
                   </div>
                   <Transition
@@ -164,6 +174,7 @@ export default function Header({ handleLogout }) {
                         {({ active }) => (
                           <a
                             href="#"
+                            onClick={handleLogout}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out

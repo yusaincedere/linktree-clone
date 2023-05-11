@@ -7,7 +7,6 @@ const linkService = {
     if (linkCount >= 20) {
       throw new Error('User cannot have more than 20 link');
     }
-
     // Create the link
     const link = await Link.create({
       ...linkData,
@@ -22,7 +21,7 @@ const linkService = {
     return deletedRows > 0;
   },
 
-  async getLinksByUserId(userId) {
+  async getLinksByUser(userId) {
     const links = await Link.findAll({ where: { user_id: userId } });
     return links;
   }

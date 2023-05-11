@@ -6,10 +6,9 @@ export default async function handler(req, res) {
   try {
     console.log(userId)
     // Retrieve all links for the user
-    const links = await linkService.getLinksByUserId(userId);
+    const links = await linkService.getLinksByUser(userId);
     res.status(200).json({ links });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: error });
   }
 }

@@ -15,7 +15,6 @@ export default function App({ Component, pageProps }) {
     localStorage.setItem('isAuthenticated', "false");
     localStorage.setItem('userName', "");
     localStorage.setItem('userPhoto', "");
-    setUser(null);
     router.push('/');
   };
 
