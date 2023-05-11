@@ -23,7 +23,6 @@ const userService = {
         if (!user) {
           throw new Error('Invalid email');
         }
-    
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
           throw new Error('Invalid password');

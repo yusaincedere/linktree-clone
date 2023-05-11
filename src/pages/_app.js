@@ -1,28 +1,28 @@
 import '@/styles/globals.css';
 import Layout from '@/components/layout/layout.js';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user,setUser] = useState();
+  const router = useRouter();
   const handleLogin = async (user) => {
-    setIsAuthenticated(true);
-    Router.push('/');
-    setUser(user);
+    localStorage.setItem('isAuthenticated', "true");
+    router.push('/');
+    localStorage.setItem('userName', user.userName);
+    localStorage.setItem('userPhoto', user.photoUrl);
   };
   const handleLogout = async () => {
     // Implement logout logic here and set isAuthenticated to false
-    setIsAuthenticated(false);
+    localStorage.setItem('isAuthenticated', "false");
+    localStorage.setItem('userName', "");
+    localStorage.setItem('userPhoto', "");
     setUser(null);
-    Router.push('/');
+    router.push('/');
   };
 
 
   return (
-    <Layout handleLogout={handleLogout} isAuthenticated={isAuthenticated} user={user} handleLogin={handleLogin}>
+    <Layout handleLogout={handleLogout} handleLogin={handleLogin}>
     <Component {...pageProps}/>
     </Layout>
- 
- 
   )
 }

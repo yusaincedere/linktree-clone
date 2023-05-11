@@ -1,36 +1,34 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import logo from '../../../public/images/icon.svg'
 import background from '../../../public/images/register-bg.png'
-export default function LoginPage({ pageProps }) {
+export default function RegisterPage(props) {
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
   const [photoUrl, setPhotoUrl] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const router = useRouter();
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const user = {
+      userName:userName,
+      password:password,
+      photoUrl:photoUrl,
+    }
     try {
       const response = await fetch('/api/users/createUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          userName,
-          password,
-          photoUrl,
-        })
+        body:JSON.stringify(user)
       });
       if (response.ok) {
-        // post created successfully
         setUserName('');
         setPassword('');
         setPhotoUrl('')
         setErrorMessage('');
-        router.push('/');
+        props.handleLogin(user);
       } else {
         // handle error response
         const data = await response.json();
@@ -64,14 +62,14 @@ export default function LoginPage({ pageProps }) {
                         Create your account
                       </h4>
                       <p className="mb-4">Choose your Linktree username. You can always change it later.</p>
-                      {errorMessage && <p className='text-danger'>{errorMessage}</p>}
+                      {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
                     </div>
 
                     <form onSubmit={handleSubmit}>
 
                       {/* User name input*/}
                       <div className="relative mb-4" data-te-input-wrapper-init>
-                      <label
+                        <label
                           htmlFor="exampleFormControlInput1"
                         >Username
                         </label>
@@ -81,12 +79,12 @@ export default function LoginPage({ pageProps }) {
                           className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 border-2"
                           id="exampleFormControlInput1"
                           placeholder="Username" />
-  
+
                       </div>
 
                       {/* password  input*/}
                       <div className="relative mb-4" data-te-input-wrapper-init>
-                      <label
+                        <label
                           htmlFor="exampleFormControlInput11"
                         >Password
                         </label>
@@ -96,7 +94,7 @@ export default function LoginPage({ pageProps }) {
                           className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 border-2"
                           id="exampleFormControlInput11"
                           placeholder="Password" />
-                        
+
                       </div>
                       {/* Register button*/}
                       <div className="flex items-center justify-between pb-6">

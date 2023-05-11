@@ -1,4 +1,4 @@
-import { Fragment,useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../../public/images/icon.svg';
@@ -9,20 +9,40 @@ function classNames(...classes) {
 }
 
 
-export default function Header() {
+export default function Header({ handleLogout }) {
   const router = useRouter();
   const path = router.asPath;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [navigation, setNavigation] = useState([
-    { name: 'Links', href: '/links',  loginRequired: true},
-    { name: 'Home', href: '/', loginRequired: false},
-    { name: 'Team', href: '/team', loginRequired: false},
+    { name: 'Links', href: '/links' },
+    { name: 'Home', href: '/' },
+    { name: 'Team', href: '/team' },
   ]);
   const userSignIn = false;
 
 
 
+  useEffect(() => {
+    const storedData = localStorage.getItem('isAuthenticated');
+    if (storedData) {
+      setIsAuthenticated(storedData === 'true');
+    }
+  }, []);
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(localStorage.getItem("isAuthenticated") === "true");
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    router.events.on('routeChangeStart', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      router.events.off('routeChangeStart', handleStorageChange);
+    };
+  }, []);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -40,7 +60,7 @@ export default function Header() {
                     <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
-                
+
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
@@ -57,47 +77,53 @@ export default function Header() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.href === path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
-                        )}
-                        aria-current={item.href === path ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                    {navigation.map((item) => {
+                      console.log(isAuthenticated);
+                      if (item.name === 'Links' && !isAuthenticated) {
+                        return null;
+                      }
+                      return (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className={classNames(
+                            item.href === path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            'rounded-md px-3 py-2 text-sm font-medium'
+                          )}
+                          aria-current={item.href === path ? 'page' : undefined}
+                        >
+                          {item.name}
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        
-                  <a
-                        href="/login"
-                        className={classNames('bg-white text-black m-3',
-                          'rounded-md px-3 py-2 text-sm font-medium'
-                        )}
-                      >
-                        Login
-                      </a>
-                      <a
-                        href="/register"
-                        className={classNames('bg-gray-700 text-white m-3',
-                          'rounded-md px-3 py-2 text-sm font-medium'
-                        )}
-                      >
-                        Register
-                      </a>
+
+                <a
+                  href="/login"
+                  className={classNames('bg-white text-black m-3',
+                    'rounded-md px-3 py-2 text-sm font-medium'
+                  )}
+                >
+                  Login
+                </a>
+                <a
+                  href="/register"
+                  className={classNames('bg-gray-700 text-white m-3',
+                    'rounded-md px-3 py-2 text-sm font-medium'
+                  )}
+                >
+                  Register
+                </a>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      {userSignIn &&<img
+                      {userSignIn && <img
                         className="h-8 w-8 rounded-full"
                         src={props.profileImageUrl}
                         alt=""
