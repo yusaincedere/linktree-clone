@@ -6,7 +6,7 @@ export default function HomePage({ pageProps }) {
   const [title, setTitle] = useState('');
   const [link, setLink] = useState('');
   const [platform, setPlatform] = useState('');
-  const userName = useRef();
+  const userName = useRef("");
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [isErrorVisible, setIsErrorVisible] = useState(false);
